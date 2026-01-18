@@ -8,6 +8,9 @@ import { ChevronDown, ExternalLink, BarChart3 } from "lucide-react"
 import { BrokerLogo, RegulatorBadge, AutoRebateBadge } from "@/lib/broker-utils"
 import { activeBrokers, getBestBrokerForInstrument, getNetCost, getSpreadCost, getRebate } from "@/lib/broker-data"
 
+// TradingView Chart import
+import TradingViewChart from "@/app/components/insights/TradingViewChart";
+
 export function InsightsPageClient() {
   const { t } = useLanguage()
   const [selectedInstrument, setSelectedInstrument] = useState("XAUUSD")
@@ -25,12 +28,10 @@ export function InsightsPageClient() {
     { value: "week", label: t.insights?.thisWeek || "This week" },
   ]
 
-  // Get best broker for selected instrument
   const bestBroker = useMemo(() => {
     return getBestBrokerForInstrument(selectedInstrument)
   }, [selectedInstrument])
 
-  // Generate insight cards based on real broker data
   const insightCards = useMemo(() => {
     return [
       {
@@ -87,7 +88,6 @@ export function InsightsPageClient() {
       <section className="py-6 border-b border-border bg-secondary/30">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-center gap-4">
-            {/* Instrument Dropdown */}
             <div className="relative">
               <select
                 value={selectedInstrument}
@@ -103,7 +103,6 @@ export function InsightsPageClient() {
               <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
             </div>
 
-            {/* Timeframe Selector */}
             <div className="flex rounded-lg bg-card border border-border overflow-hidden">
               {timeframes.map((tf) => (
                 <button
@@ -127,7 +126,7 @@ export function InsightsPageClient() {
       <section className="py-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-6">
-            {/* Chart Area - 2 columns */}
+            {/* Chart Area */}
             <div className="lg:col-span-2">
               <Card className="p-4 border-border h-full">
                 <div className="flex items-center justify-between mb-4">
@@ -138,23 +137,18 @@ export function InsightsPageClient() {
                     {instruments.find((i) => i.value === selectedInstrument)?.label}
                   </span>
                 </div>
-                {/* TradingView Widget Placeholder */}
-                <div className="aspect-video bg-muted rounded-lg flex items-center justify-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-secondary/50 to-secondary" />
-                  <div className="relative z-10 text-center">
-                    <BarChart3 className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-                    <p className="text-muted-foreground">
-                      {t.insights?.chartPlaceholder || "TradingView chart integration"}
-                    </p>
-                    <p className="text-xs text-muted-foreground/70 mt-1">
-                      {selectedInstrument} - {selectedTimeframe === "today" ? "1H" : "4H"} timeframe
-                    </p>
-                  </div>
-                </div>
+
+                {/* TradingView Chart */}
+                <TradingViewChart
+                  symbol={selectedInstrument}
+                  interval={selectedTimeframe === "today" ? "60" : "240"}
+                  theme="dark"
+                  height={420}
+                />
               </Card>
             </div>
 
-            {/* Cost Snapshot - 1 column */}
+            {/* Cost Snapshot */}
             <div className="lg:col-span-1">
               <Card className="p-5 border-border bg-card h-full">
                 <h3 className="text-sm font-medium text-muted-foreground mb-4">
