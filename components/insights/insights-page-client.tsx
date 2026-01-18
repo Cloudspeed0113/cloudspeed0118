@@ -9,7 +9,7 @@ import { BrokerLogo, RegulatorBadge, AutoRebateBadge } from "@/lib/broker-utils"
 import { activeBrokers, getBestBrokerForInstrument, getNetCost, getSpreadCost, getRebate } from "@/lib/broker-data"
 
 // TradingView Chart import
-import TradingViewChart from "@/app/components/insights/TradingViewChart";
+import TradingViewChart from "@/components/insights/TradingViewChart";
 
 export function InsightsPageClient() {
   const { t } = useLanguage()
