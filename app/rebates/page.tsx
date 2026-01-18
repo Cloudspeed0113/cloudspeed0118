@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { RebatesPageClient } from "@/components/rebates/rebates-page-client"
 import { rebatesData, topPicks, topRatedBrokers } from "@/data/rebates-data"
 
